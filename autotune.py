@@ -75,20 +75,35 @@ def plot_signal(y:np.ndarray, t:np.ndarray, freqs:np.ndarray, Y:np.ndarray) -> N
 
 # TODO: Prends une fréquence et une clé et retourne la note la plus proche
 def closest_note(freq:float, key:list[float]) -> float:  
-    return 
+    return min(key, key=lambda note: abs(note - freq))
 
 # TODO: Générer le signal normal
-
+y, t = generation_signal(frequencies)
 # TODO: Calculer la transformée de Fourier du signal
+
+Y, freqs = transfo_fourier(y, t, sampling_rate) 
 
 # TODO: Afficher le signal et son spectre de fréquences
 
+plot_signal(y, t, freqs, Y)
+
 # TODO: Trouver les fréquences dominantes
+
+print(f"Fréquences dominantes : {freqs_dominantes(Y, freqs, num_frequencies)}")
 
 # TODO: Remplacer les fréquences dominantes par les notes les plus proches de la gamme donnée
 
+new_freqs = [closest_note(f, keys["Do"]) for f in dominant_freqs]
+print(f"Fréquences ajustées : {new_freqs}")
+
 # TODO: Recomposer le signal avec les nouvelles fréquences
+
+y_new, _ = generation_signal(np.array(new_freqs))
 
 # TODO: Calculer la FFT du nouveau signal
 
+Y_new, freqs_new = transfo_fourier(y_new, t, sampling_rate)
+
 # TODO: Afficher le nouveau signal et son spectre
+
+plot_signal(y_new, t, freqs_new, Y_new)
